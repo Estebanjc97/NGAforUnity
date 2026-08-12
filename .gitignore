@@ -1,0 +1,15 @@
+# Build outputs
+build/
+external/
+obj/
+x64/
+.vs/
+*.dll
+*.lib
+*.pdb
+*.exp
+*.ilk
+# Visual Studio user files
+*.user
+# NVIDIA models (~3 GB, EULA propia — nunca al repo)
+data/models/
