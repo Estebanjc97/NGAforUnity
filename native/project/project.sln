@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36203.30 d17.14
+VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "project", "project.vcxproj", "{62378839-5964-410E-A0F6-03DD8FA5468B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NGAforUnity", "project.vcxproj", "{62378839-5964-410E-A0F6-03DD8FA5468B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NGA_Test", "..\NGA_Test\NGA_Test.vcxproj", "{BF79273F-9702-481F-91BD-0718C566FFFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,14 @@ Global
 		{62378839-5964-410E-A0F6-03DD8FA5468B}.Release|x64.Build.0 = Release|x64
 		{62378839-5964-410E-A0F6-03DD8FA5468B}.Release|x86.ActiveCfg = Release|Win32
 		{62378839-5964-410E-A0F6-03DD8FA5468B}.Release|x86.Build.0 = Release|Win32
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Debug|x64.ActiveCfg = Debug|x64
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Debug|x64.Build.0 = Debug|x64
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Debug|x86.ActiveCfg = Debug|Win32
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Debug|x86.Build.0 = Debug|Win32
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Release|x64.ActiveCfg = Release|x64
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Release|x64.Build.0 = Release|x64
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Release|x86.ActiveCfg = Release|Win32
+		{BF79273F-9702-481F-91BD-0718C566FFFE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
