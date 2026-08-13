@@ -2,8 +2,8 @@
 #include "internal.hpp"
 #include <cstring>
 
-NgaResult nga_copy_utf8(const std::string& src, char* buf, int32_t len, int32_t* written) {
-
+NgaResult nga_copy_utf8(const std::string& src, char* buf, int32_t len, int32_t* written) 
+{
     const int32_t required = (int32_t)src.size() + 1;
 
     if (written) *written = required;

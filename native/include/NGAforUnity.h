@@ -15,7 +15,7 @@
 #endif
 
 #define NGA_ABI_MAJOR 0
-#define NGA_ABI_MINOR 1
+#define NGA_ABI_MINOR 3
 #define NGA_ABI_VERSION ((NGA_ABI_MAJOR << 16) | NGA_ABI_MINOR)
 
         typedef enum NgaResult {
@@ -25,6 +25,8 @@
         } NgaResult;
 
         typedef struct NgaRuntime* NgaRuntimeHandle;
+        
+        typedef void(__cdecl* NgaTokenCallback)(const char* tokenUtf8, void* userData);
 
         NGA_API uint32_t    Nga_AbiVersion(void);
         NGA_API const char* Nga_LastError(void);
@@ -32,6 +34,11 @@
         NGA_API NgaResult NgaRuntime_Create(const char* configJson, NgaRuntimeHandle* out);
         NGA_API void      NgaRuntime_Destroy(NgaRuntimeHandle rt);
         NGA_API NgaResult NgaRuntime_GetInfo(NgaRuntimeHandle rt, char* outJson, int32_t len, int32_t* written);
+        NGA_API NgaResult NgaChat_Generate(NgaRuntimeHandle rt, const char* messagesJson,
+            const char* paramsJson, char* outBuf, int32_t len, int32_t* written);
+
+        NGA_API NgaResult NgaChat_GenerateStream(NgaRuntimeHandle rt, const char* messagesJson,
+            const char* paramsJson, NgaTokenCallback onToken, void* userData);
 
 #ifdef __cplusplus
     }
