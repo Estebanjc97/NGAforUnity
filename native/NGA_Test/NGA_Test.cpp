@@ -52,6 +52,8 @@ int main() {
         int32_t w2 = 0;
         NgaResult cr = NgaChat_Generate(rt, messages, nullptr, reply.data(), (int32_t)reply.size(), &w2);
         CHECK(cr == NGA_OK, "NgaChat_Generate result OK");
+        if (cr == NGA_OK) printf("Model response = %s\n", reply.data());
+        else              printf("error: %s\n", Nga_LastError());
 
         printf("\nGenerating model response via streamming (token per token):\n");
         const char* messages2 = "[{\"role\":\"user\",\"content\":\"What is the difference between chat and streamming?.\"}]";
@@ -59,8 +61,16 @@ int main() {
         printf("\n");
         CHECK(sr == NGA_OK, "NgaChat_GenerateStream result OK");
 
-        if (cr == NGA_OK) printf("Model response = %s\n", reply.data());
-        else              printf("error: %s\n", Nga_LastError());
+        printf("\nGenerating with tools:\n");
+        const char* toolsDef =
+            "[{\"name\":\"get_weather\",\"description\":\"Consulta el clima de una ciudad\","
+            "\"parameters\":{\"type\":\"object\",\"properties\":{\"city\":{\"type\":\"string\",\"description\":\"Ciudad\"}},\"required\":[\"city\"]}}]";
+        const char* toolMsgs = "[{\"role\":\"user\",\"content\":\"Que clima hace en Paris? Usa la herramienta.\"}]";
+        std::vector<char> toolOut(8192);
+        int32_t w3 = 0;
+        NgaResult tr = NgaChat_GenerateWithTools(rt, toolMsgs, toolsDef, nullptr, toolOut.data(), (int32_t)toolOut.size(), &w3);
+        CHECK(tr == NGA_OK, "NgaChat_GenerateWithTools result OK");
+        if (tr == NGA_OK) printf("result = %s\n", toolOut.data());
 
         NgaRuntime_Destroy(rt);
         printf("  [ok]   Destroy\n");

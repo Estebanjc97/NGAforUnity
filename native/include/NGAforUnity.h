@@ -15,7 +15,7 @@
 #endif
 
 #define NGA_ABI_MAJOR 0
-#define NGA_ABI_MINOR 3
+#define NGA_ABI_MINOR 4
 #define NGA_ABI_VERSION ((NGA_ABI_MAJOR << 16) | NGA_ABI_MINOR)
 
         typedef enum NgaResult {
@@ -39,6 +39,10 @@
 
         NGA_API NgaResult NgaChat_GenerateStream(NgaRuntimeHandle rt, const char* messagesJson,
             const char* paramsJson, NgaTokenCallback onToken, void* userData);
+
+        NGA_API NgaResult NgaChat_GenerateWithTools(NgaRuntimeHandle rt, const char* messagesJson,
+            const char* toolsJson, const char* paramsJson,
+            char* outJson, int32_t len, int32_t* written);
 
 #ifdef __cplusplus
     }
