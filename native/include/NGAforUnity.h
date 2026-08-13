@@ -15,7 +15,7 @@
 #endif
 
 #define NGA_ABI_MAJOR 0
-#define NGA_ABI_MINOR 4
+#define NGA_ABI_MINOR 5
 #define NGA_ABI_VERSION ((NGA_ABI_MAJOR << 16) | NGA_ABI_MINOR)
 
         typedef enum NgaResult {
@@ -27,6 +27,9 @@
         typedef struct NgaRuntime* NgaRuntimeHandle;
         
         typedef void(__cdecl* NgaTokenCallback)(const char* tokenUtf8, void* userData);
+
+        typedef struct NgaKnowledgeBase* NgaKbHandle;
+        typedef enum { NGA_RAG_SEMANTIC = 0, NGA_RAG_LEXICAL = 1, NGA_RAG_HYBRID = 2 } NgaRagMode;
 
         NGA_API uint32_t    Nga_AbiVersion(void);
         NGA_API const char* Nga_LastError(void);
@@ -42,6 +45,12 @@
 
         NGA_API NgaResult NgaChat_GenerateWithTools(NgaRuntimeHandle rt, const char* messagesJson,
             const char* toolsJson, const char* paramsJson,
+            char* outJson, int32_t len, int32_t* written);
+
+        NGA_API NgaResult NgaRag_OpenKB(NgaRuntimeHandle rt, const char* kbConfigJson, NgaKbHandle* out);
+        NGA_API void      NgaRag_CloseKB(NgaKbHandle kb);
+
+        NGA_API NgaResult NgaRag_Query(NgaKbHandle kb, const char* query, NgaRagMode mode, int32_t topK,
             char* outJson, int32_t len, int32_t* written);
 
 #ifdef __cplusplus

@@ -161,6 +161,7 @@
     <ClCompile Include="..\src\chat.cpp" />
     <ClCompile Include="..\src\error.cpp" />
     <ClCompile Include="..\src\marshal.cpp" />
+    <ClCompile Include="..\src\rag.cpp" />
     <ClCompile Include="..\src\runtime.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>

@@ -13,6 +13,12 @@ struct NgaRuntime {
     std::string infoJson;
 };
 
+struct NgaKnowledgeBase {
+    NgaRuntime* rt = nullptr;
+    ACEDatabase* semantic = nullptr;
+    ACEDatabase* lexical = nullptr;
+};
+
 void        nga_set_last_error(const std::string& msg);
 void        nga_clear_last_error();
 const char* nga_get_last_error();
