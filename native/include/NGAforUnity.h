@@ -15,7 +15,7 @@
 #endif
 
 #define NGA_ABI_MAJOR 0
-#define NGA_ABI_MINOR 5
+#define NGA_ABI_MINOR 6
 #define NGA_ABI_VERSION ((NGA_ABI_MAJOR << 16) | NGA_ABI_MINOR)
 
         typedef enum NgaResult {
@@ -30,6 +30,9 @@
 
         typedef struct NgaKnowledgeBase* NgaKbHandle;
         typedef enum { NGA_RAG_SEMANTIC = 0, NGA_RAG_LEXICAL = 1, NGA_RAG_HYBRID = 2 } NgaRagMode;
+
+        typedef struct NgaAgent* NgaAgentHandle;
+        typedef enum { NGA_STEP_DONE = 0, NGA_STEP_TOOL_CALL = 1, NGA_STEP_MESSAGE = 2, NGA_STEP_RUNNING = 3 } NgaStepKind;
 
         NGA_API uint32_t    Nga_AbiVersion(void);
         NGA_API const char* Nga_LastError(void);
@@ -52,6 +55,15 @@
 
         NGA_API NgaResult NgaRag_Query(NgaKbHandle kb, const char* query, NgaRagMode mode, int32_t topK,
             char* outJson, int32_t len, int32_t* written);
+
+        NGA_API NgaResult NgaAgent_Create(NgaRuntimeHandle rt, const char* agentConfigJson, NgaAgentHandle* out);
+        NGA_API void      NgaAgent_Destroy(NgaAgentHandle a);
+        NGA_API NgaResult NgaAgent_AddTool(NgaAgentHandle a, const char* toolSchemaJson);
+        NGA_API NgaResult NgaAgent_SetSystemPrompt(NgaAgentHandle a, const char* prompt);
+        NGA_API NgaResult NgaAgent_SendMessage(NgaAgentHandle a, const char* content);
+        NGA_API NgaResult NgaAgent_Step(NgaAgentHandle a, NgaStepKind* kind, char* outJson, int32_t len, int32_t* written);
+        NGA_API NgaResult NgaAgent_ProvideToolResult(NgaAgentHandle a, const char* toolCallId, const char* resultJson);
+        NGA_API NgaResult NgaAgent_GetHistory(NgaAgentHandle a, char* outJson, int32_t len, int32_t* written);
 
 #ifdef __cplusplus
     }

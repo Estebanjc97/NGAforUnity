@@ -19,6 +19,11 @@ struct NgaKnowledgeBase {
     ACEDatabase* lexical = nullptr;
 };
 
+struct NgaAgent {
+    NgaRuntime* rt = nullptr;
+    ACEAgent* agent = nullptr;
+};
+
 void        nga_set_last_error(const std::string& msg);
 void        nga_clear_last_error();
 const char* nga_get_last_error();

@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\agent.cpp" />
     <ClCompile Include="..\src\chat.cpp" />
     <ClCompile Include="..\src\error.cpp" />
     <ClCompile Include="..\src\marshal.cpp" />
