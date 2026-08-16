@@ -41,14 +41,19 @@ namespace NGAforUnity
             string emb = models + "/miniLM/all-MiniLM-L6-v2.F32.gguf";
 
             Debug.Log("[NGA] Loading runtime (SLM -> GPU, first time is slow)...");
-            _runtime = NGARuntime.Create(new NGARuntimeConfig
+
+            var cfg = new NGARuntimeConfig
             {
                 SlmPath = models + "/qwen3.5/Qwen3.5-4B-Q4_K_M.gguf",
                 EmbeddingModelPaths = new[] { emb },
                 CrossEncoderModelPath = models + "/miniLM/cross_encoder_ms-marco-MiniLM-L6-v2.onnx",
                 MaxContextSize = 4096,
                 LogLevel = 1
-            });
+            };
+
+            Debug.Log($"Config {JsonUtility.ToJson(cfg)}");
+
+            _runtime = NGARuntime.Create(cfg);
 
             Debug.Log("[NGA] " + _runtime.GetInfo());
 
