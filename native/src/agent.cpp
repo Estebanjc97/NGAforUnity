@@ -164,3 +164,21 @@ extern "C" NGA_API NgaResult NgaAgent_GetHistory(NgaAgentHandle a, char* outJson
     return nga_copy_utf8(arr.dump(), outJson, len, written);
     NGA_TRY_END
 }
+
+extern "C" NGA_API NgaResult NgaAgent_Cancel(NgaAgentHandle a) {
+    NGA_TRY_BEGIN
+    if (!a || !a->agent) { nga_set_last_error("agent null"); return NGA_ERR_INVALID_ARG; }
+    ACEResult r = ace_agentCancel(a->agent, 0);
+    if (r != ACEResultOk) return nga_translate_result(r, "ace_agentCancel");
+    return NGA_OK;
+    NGA_TRY_END
+}
+
+extern "C" NGA_API NgaResult NgaAgent_ClearCancel(NgaAgentHandle a) {
+    NGA_TRY_BEGIN
+    if (!a || !a->agent) { nga_set_last_error("agent null"); return NGA_ERR_INVALID_ARG; }
+    ACEResult r = ace_agentClearCancel(a->agent);
+    if (r != ACEResultOk) return nga_translate_result(r, "ace_agentClearCancel");
+    return NGA_OK;
+    NGA_TRY_END
+}

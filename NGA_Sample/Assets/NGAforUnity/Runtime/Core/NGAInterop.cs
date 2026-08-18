@@ -147,5 +147,11 @@ namespace NGAforUnity
         [DllImport(Dll, CallingConvention = Cdecl)]
         internal static extern NgaResult NgaAgent_GetHistory(IntPtr a,
             [Out] byte[] outJson, int len, out int written);
+
+        [DllImport(Dll, CallingConvention = Cdecl)]
+        internal static extern NgaResult NgaAgent_Cancel(IntPtr a);
+
+        [DllImport(Dll, CallingConvention = Cdecl)]
+        internal static extern NgaResult NgaAgent_ClearCancel(IntPtr a);
     }
 }

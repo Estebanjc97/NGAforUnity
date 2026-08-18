@@ -150,6 +150,10 @@ namespace NGAforUnity
         // Tool handlers by name (executed on the main thread).
         private readonly Dictionary<string, Func<string, string>> _toolHandlers = new();
 
+        // Tools that end the turn as soon as their result is provided (the model won't be stepped
+        // again). Lets single-decision agents stop after one tool call instead of re-calling it.
+        private readonly HashSet<string> _terminalTools = new();
+
         // Tool calls awaiting resolution through the event (Id -> promise).
         private readonly ConcurrentDictionary<string, TaskCompletionSource<string>> _pendingToolCalls = new();
 
@@ -396,6 +400,17 @@ namespace NGAforUnity
             else _toolHandlers[toolName] = handler;
         }
 
+        /// <summary>
+        /// Marks a tool as terminal: once the agent calls it and its result is delivered, the current
+        /// turn is cancelled and finalized instead of continuing to step. Idempotent.
+        /// </summary>
+        public void SetTerminalTool(string toolName, bool terminal = true)
+        {
+            if (string.IsNullOrEmpty(toolName)) return;
+            if (terminal) _terminalTools.Add(toolName);
+            else _terminalTools.Remove(toolName);
+        }
+
         /// <summary>Delivers the result of a tool call requested via AgentToolCallRequested.</summary>
         public void ProvideToolResult(string toolCallId, string resultJson)
         {
@@ -466,6 +481,7 @@ namespace NGAforUnity
 
                         case NgaStepKind.ToolCall:
                             ToolCallDto[] calls = ParseToolCalls(json);
+                            bool endTurn = false;
                             if (calls != null)
                             {
                                 foreach (ToolCallDto dto in calls)
@@ -473,7 +489,19 @@ namespace NGAforUnity
                                     var call = new NGAToolCall(dto.id, dto.name, dto.arguments);
                                     string result = await ResolveToolCallAsync(agent, call).ConfigureAwait(false);
                                     await RunLockedAsync(() => agent.ProvideToolResult(call.Id, result)).ConfigureAwait(false);
+                                    if (_terminalTools.Contains(call.Name)) endTurn = true;
                                 }
+                            }
+                            if (endTurn)
+                            {
+                                // A terminal tool was handled: cancel the native turn so the agent
+                                // returns to Idle (and stops re-calling the tool). ClearCancel removes
+                                // the pending Cancelled status so the NEXT turn's first Step is not
+                                // swallowed. Then deliver what we accumulated: exactly one AgentMessage
+                                // per turn, like the Done path.
+                                await RunLockedAsync(() => { agent.Cancel(); agent.ClearCancel(); }).ConfigureAwait(false);
+                                Post(() => AgentMessage?.Invoke(agent, response ?? string.Empty));
+                                return;
                             }
                             break;
 

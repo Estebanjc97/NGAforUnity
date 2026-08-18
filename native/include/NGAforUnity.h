@@ -15,7 +15,7 @@
 #endif
 
 #define NGA_ABI_MAJOR 0
-#define NGA_ABI_MINOR 6
+#define NGA_ABI_MINOR 8
 #define NGA_ABI_VERSION ((NGA_ABI_MAJOR << 16) | NGA_ABI_MINOR)
 
         typedef enum NgaResult {
@@ -64,6 +64,8 @@
         NGA_API NgaResult NgaAgent_Step(NgaAgentHandle a, NgaStepKind* kind, char* outJson, int32_t len, int32_t* written);
         NGA_API NgaResult NgaAgent_ProvideToolResult(NgaAgentHandle a, const char* toolCallId, const char* resultJson);
         NGA_API NgaResult NgaAgent_GetHistory(NgaAgentHandle a, char* outJson, int32_t len, int32_t* written);
+        NGA_API NgaResult NgaAgent_Cancel(NgaAgentHandle a);
+        NGA_API NgaResult NgaAgent_ClearCancel(NgaAgentHandle a);
 
 #ifdef __cplusplus
     }

@@ -59,6 +59,8 @@ static void runHardening() {
     CHECK(NgaAgent_Step(nullptr, &kind, buf, sizeof(buf), &w)        == NGA_ERR_INVALID_ARG, "Agent_Step(null) -> INVALID_ARG");
     CHECK(NgaAgent_ProvideToolResult(nullptr, "id", "{}")           == NGA_ERR_INVALID_ARG, "Agent_ProvideToolResult(null) -> INVALID_ARG");
     CHECK(NgaAgent_GetHistory(nullptr, buf, sizeof(buf), &w)         == NGA_ERR_INVALID_ARG, "Agent_GetHistory(null) -> INVALID_ARG");
+    CHECK(NgaAgent_Cancel(nullptr)                                   == NGA_ERR_INVALID_ARG, "Agent_Cancel(null) -> INVALID_ARG");
+    CHECK(NgaAgent_ClearCancel(nullptr)                              == NGA_ERR_INVALID_ARG, "Agent_ClearCancel(null) -> INVALID_ARG");
 
     // Destroy on null must be safe.
     NgaRuntime_Destroy(nullptr);
@@ -171,6 +173,9 @@ int main() {
                     break;
                 }
             }
+            // Cancel + ClearCancel on a valid, idle agent must succeed (happy path).
+            CHECK(NgaAgent_Cancel(ag) == NGA_OK, "NgaAgent_Cancel on valid agent -> OK");
+            CHECK(NgaAgent_ClearCancel(ag) == NGA_OK, "NgaAgent_ClearCancel on valid agent -> OK");
             NgaAgent_Destroy(ag);
         }
         NgaRag_CloseKB(kb);

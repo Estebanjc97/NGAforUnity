@@ -62,6 +62,12 @@ namespace NGAforUnity
         public void ProvideToolResult(string toolCallId, string resultJson) =>
             NGAException.Check(NGAInterop.NgaAgent_ProvideToolResult(Handle, toolCallId, resultJson), "ProvideToolResult");
 
+        public void Cancel() =>
+            NGAException.Check(NGAInterop.NgaAgent_Cancel(Handle), "Cancel");
+
+        public void ClearCancel() =>
+            NGAException.Check(NGAInterop.NgaAgent_ClearCancel(Handle), "ClearCancel");
+
         // One step. Returns the kind and the JSON payload
         // (Message -> {"content":...}; ToolCall -> {"toolCalls":[...]}).
         public (NgaStepKind kind, string json) Step()
